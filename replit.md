@@ -44,13 +44,39 @@ A full-stack luxury watch e-commerce application demonstrating FastAPI best prac
 
 ## Features Implemented
 ✅ User registration with email validation and password strength requirements
-✅ User login with JWT token generation
+✅ User login with JWT token generation using environment-based secret key
 ✅ Admin user creation on startup
 ✅ Full CRUD operations for watches (admin only)
 ✅ Public watch listing and detail pages
 ✅ Protected routes for admin dashboard
 ✅ Responsive dark theme UI with dark red accents
 ✅ Sample luxury watch data pre-loaded
+✅ Secure JWT secret management using environment variables
+
+## Security Configuration
+
+### JWT Secret Key
+The application uses the `SESSION_SECRET` environment variable for JWT token signing. This secret is:
+- **Never hard-coded** in source control
+- Automatically available in Replit as a managed secret
+- Required for the application to start
+- Used to sign and verify all JWT authentication tokens
+
+If running locally, generate a secure secret key:
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+Then set it as an environment variable:
+```bash
+export SESSION_SECRET="your-generated-secret-key"
+```
+
+### Password Security
+- All passwords are hashed using **bcrypt** (work factor automatically managed)
+- Passwords are **never stored in plain text**
+- Password validation requires: minimum 8 characters, uppercase, lowercase, and digit
+- Bcrypt version pinned to 4.0.1 for stability
 
 ## Default Credentials
 - **Username**: admin

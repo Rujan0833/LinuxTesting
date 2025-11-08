@@ -5,6 +5,7 @@ Handles password hashing, JWT token creation/validation,
 and user authentication dependencies.
 """
 
+import os
 from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import Depends, HTTPException, status
@@ -18,7 +19,17 @@ from models import User
 from schemas import TokenData
 
 # Security configuration
-SECRET_KEY = "your-secret-key-change-this-in-production-use-secrets-generator"
+# IMPORTANT: SECRET_KEY must be set as an environment variable
+# Use SESSION_SECRET in production or generate a secure random key:
+# python -c "import secrets; print(secrets.token_urlsafe(32))"
+SECRET_KEY = os.getenv("SESSION_SECRET")
+if not SECRET_KEY:
+    raise ValueError(
+        "SESSION_SECRET environment variable is not set. "
+        "This is required for JWT token signing. "
+        "Generate a secure key with: python -c 'import secrets; print(secrets.token_urlsafe(32))'"
+    )
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
